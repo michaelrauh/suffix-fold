@@ -203,22 +203,54 @@ mod tests {
         assert!(t.children_names().contains(&"d".to_string()));
 
         // a has two children
-        assert_eq!(t.step_down("a".to_string()).unwrap().children_names().len(), 2);
-        assert!(t.step_down("a".to_string()).unwrap().children_names().contains(&"b".to_string()));
-        assert!(t.step_down("a".to_string()).unwrap().children_names().contains(&"c".to_string()));
+        assert_eq!(
+            t.step_down("a".to_string()).unwrap().children_names().len(),
+            2
+        );
+        assert!(t
+            .step_down("a".to_string())
+            .unwrap()
+            .children_names()
+            .contains(&"b".to_string()));
+        assert!(t
+            .step_down("a".to_string())
+            .unwrap()
+            .children_names()
+            .contains(&"c".to_string()));
 
         // b has one child
-        assert_eq!(t.step_down("b".to_string()).unwrap().children_names().len(), 1);
-        assert!(t.step_down("b".to_string()).unwrap().children_names().contains(&"d".to_string()));
+        assert_eq!(
+            t.step_down("b".to_string()).unwrap().children_names().len(),
+            1
+        );
+        assert!(t
+            .step_down("b".to_string())
+            .unwrap()
+            .children_names()
+            .contains(&"d".to_string()));
 
         // c has one child
-        assert_eq!(t.step_down("c".to_string()).unwrap().children_names().len(), 1);
-        assert!(t.step_down("c".to_string()).unwrap().children_names().contains(&"d".to_string()));
+        assert_eq!(
+            t.step_down("c".to_string()).unwrap().children_names().len(),
+            1
+        );
+        assert!(t
+            .step_down("c".to_string())
+            .unwrap()
+            .children_names()
+            .contains(&"d".to_string()));
 
         // d has no children
-        assert_eq!(t.step_down("d".to_string()).unwrap().children_names().len(), 0);
+        assert_eq!(
+            t.step_down("d".to_string()).unwrap().children_names().len(),
+            0
+        );
 
         // bad paths give back none
-        assert!(t.step_down("a".to_string()).unwrap().step_down("a".to_string()).is_none());
+        assert!(t
+            .step_down("a".to_string())
+            .unwrap()
+            .step_down("a".to_string())
+            .is_none());
     }
 }
