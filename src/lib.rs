@@ -53,6 +53,14 @@ impl Tree {
         }
         tree
     }
+
+    pub fn names_at_path(&self, path: Vec<String>) -> Option<Vec<String>> {
+        let mut node = self;
+        for k in path {
+            node = node.step_down(k)?;
+        }
+        Some(node.children_names())
+    }
 }
 
 fn suffixes(xs: Vec<String>) -> Vec<Vec<String>> {
@@ -252,5 +260,31 @@ mod tests {
             .unwrap()
             .step_down("a".to_string())
             .is_none());
+    }
+
+    #[test]
+    fn it_finds_names_at_a_path() {
+        let t = Tree::from_corpus("a b c. a b d. a b e".to_string());
+
+        let res = t
+            .names_at_path(vec!["a".to_string(), "b".to_string()])
+            .unwrap();
+        assert_eq!(res.len(), 3);
+        assert!(res.contains(&"c".to_string()));
+        assert!(res.contains(&"d".to_string()));
+        assert!(res.contains(&"e".to_string()));
+    }
+
+    #[test]
+    fn it_returns_none_for_nonexistent_paths() {
+        let t = Tree::from_corpus("a b c. a b d. a b e".to_string());
+
+        let res = t.names_at_path(vec![
+            "a".to_string(),
+            "b".to_string(),
+            "d".to_string(),
+            "f".to_string(),
+        ]);
+        assert_eq!(res, None);
     }
 }
