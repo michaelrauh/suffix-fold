@@ -61,6 +61,21 @@ impl Tree {
         }
         Some(node.children_names())
     }
+
+    pub fn span_map(&self) -> HashMap<String, usize> {
+        self.children_names()
+            .into_iter()
+            .map(|name| {
+                (
+                    name.clone(),
+                    self.step_down(name)
+                        .expect("iterating over names means the names are there")
+                        .children_names()
+                        .len(),
+                )
+            })
+            .collect()
+    }
 }
 
 fn suffixes(xs: Vec<String>) -> Vec<Vec<String>> {
@@ -286,5 +301,17 @@ mod tests {
             "f".to_string(),
         ]);
         assert_eq!(res, None);
+    }
+
+    #[test]
+    fn it_builds_a_span_map() {
+        let t = Tree::from_corpus("a b c. a b d. a b e".to_string());
+
+        let m = t.span_map();
+        assert_eq!(m[&"a".to_string()], 1);
+        assert_eq!(m[&"b".to_string()], 3);
+        assert_eq!(m[&"c".to_string()], 0);
+        assert_eq!(m[&"d".to_string()], 0);
+        assert_eq!(m[&"e".to_string()], 0);
     }
 }
