@@ -1,5 +1,6 @@
 mod tree {
     use crate::string_handlers::string_handlers::split_corpus;
+    use crate::string_handlers::string_handlers::split_sentence;
     use crate::string_handlers::string_handlers::suffixes;
     use std::collections::HashMap;
 
@@ -52,18 +53,11 @@ mod tree {
             self.children.get(&name)
         }
 
-        fn split_sentence(sentence: String) -> Vec<String> {
-            sentence
-                .split_ascii_whitespace()
-                .map(|x| x.to_string())
-                .collect()
-        }
-
         pub fn from_corpus(corpus: String) -> Self {
             let mut tree = Tree::default();
             let sentences = split_corpus(corpus);
             for sentence in sentences {
-                for suffix in suffixes(Self::split_sentence(sentence)) {
+                for suffix in suffixes(split_sentence(sentence)) {
                     tree.add_phrase(suffix)
                 }
             }

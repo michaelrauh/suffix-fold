@@ -9,6 +9,13 @@ pub mod string_handlers {
         acc
     }
 
+    pub fn split_sentence(sentence: String) -> Vec<String> {
+        sentence
+            .split_ascii_whitespace()
+            .map(|x| x.to_string())
+            .collect()
+    }
+
     pub fn split_corpus(x: String) -> Vec<String> {
         x.split_terminator(&['.', '!', '?', ';'])
             .filter(|x| !x.is_empty())
@@ -33,7 +40,7 @@ pub mod string_handlers {
 mod tests {
     use std::vec;
 
-    use crate::string_handlers::string_handlers::split_corpus;
+    use crate::string_handlers::string_handlers::{split_corpus, split_sentence};
 
     use super::string_handlers::suffixes;
 
@@ -69,6 +76,19 @@ mod tests {
                 "c d".to_string(),
                 "e f".to_string(),
                 "g h".to_string()
+            ]
+        );
+    }
+
+    #[test]
+    fn it_splits_a_sentence_to_words() {
+        assert_eq!(
+            split_sentence("a b c d".to_string()),
+            vec![
+                "a".to_string(),
+                "b".to_string(),
+                "c".to_string(),
+                "d".to_string()
             ]
         );
     }
