@@ -1,3 +1,4 @@
+pub mod rule;
 pub mod string_handlers;
 pub mod tree;
 
