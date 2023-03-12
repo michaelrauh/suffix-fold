@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, vec};
 
 #[derive(Debug, PartialEq, Eq)]
 struct Tree {
@@ -75,6 +75,34 @@ impl Tree {
                 )
             })
             .collect()
+    }
+
+    pub fn depth_map(&self) -> HashMap<String, usize> {
+        self.children_names()
+            .into_iter()
+            .map(|name| {
+                (
+                    name.clone(),
+                    get_depth(
+                        self.step_down(name)
+                            .expect("iterating over names means the names are there"),
+                    ),
+                )
+            })
+            .collect()
+    }
+}
+
+fn get_depth(t: &Tree) -> usize {
+    if t.children_names().len() == 0 {
+        0
+    } else {
+        1 + t
+            .children
+            .values()
+            .map(|vt| get_depth(vt))
+            .max()
+            .unwrap_or_default()
     }
 }
 
@@ -312,6 +340,18 @@ mod tests {
         assert_eq!(m[&"b".to_string()], 3);
         assert_eq!(m[&"c".to_string()], 0);
         assert_eq!(m[&"d".to_string()], 0);
+        assert_eq!(m[&"e".to_string()], 0);
+    }
+
+    #[test]
+    fn it_builds_a_depth_map() {
+        let t = Tree::from_corpus("a. a b. b c d e.".to_string());
+
+        let m = t.depth_map();
+        assert_eq!(m[&"a".to_string()], 1);
+        assert_eq!(m[&"b".to_string()], 3);
+        assert_eq!(m[&"c".to_string()], 2);
+        assert_eq!(m[&"d".to_string()], 1);
         assert_eq!(m[&"e".to_string()], 0);
     }
 }
