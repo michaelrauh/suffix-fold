@@ -1,48 +1,46 @@
-pub mod string_handlers {
 
-    pub fn suffixes(xs: Vec<String>) -> Vec<Vec<String>> {
-        let mut acc = vec![];
-        for i in 0..xs.len() {
-            let sliced: Vec<String> = xs[i..].to_vec();
-            acc.push(sliced);
-        }
-        acc
+pub fn suffixes(xs: Vec<String>) -> Vec<Vec<String>> {
+    let mut acc = vec![];
+    for i in 0..xs.len() {
+        let sliced: Vec<String> = xs[i..].to_vec();
+        acc.push(sliced);
     }
+    acc
+}
 
-    pub fn split_sentence(sentence: String) -> Vec<String> {
-        sentence
-            .split_ascii_whitespace()
-            .map(|x| x.to_string())
-            .collect()
-    }
+pub fn split_sentence(sentence: String) -> Vec<String> {
+    sentence
+        .split_ascii_whitespace()
+        .map(|x| x.to_string())
+        .collect()
+}
 
-    pub fn split_corpus(x: String) -> Vec<String> {
-        x.split_terminator(&['.', '!', '?', ';'])
-            .filter(|x| !x.is_empty())
-            .map(|x| x.trim())
-            .map(|sentence| {
-                sentence
-                    .split_ascii_whitespace()
-                    .map(|s| {
-                        s.chars()
-                            .filter(|c| c.is_alphabetic())
-                            .collect::<String>()
-                            .to_lowercase()
-                    })
-                    .collect::<Vec<_>>()
-                    .join(" ")
-            })
-            .collect()
-    }
+pub fn split_corpus(x: String) -> Vec<String> {
+    x.split_terminator(&['.', '!', '?', ';'])
+        .filter(|x| !x.is_empty())
+        .map(|x| x.trim())
+        .map(|sentence| {
+            sentence
+                .split_ascii_whitespace()
+                .map(|s| {
+                    s.chars()
+                        .filter(|c| c.is_alphabetic())
+                        .collect::<String>()
+                        .to_lowercase()
+                })
+                .collect::<Vec<_>>()
+                .join(" ")
+        })
+        .collect()
 }
 
 #[cfg(test)]
 mod tests {
     use std::vec;
 
-    use crate::string_handlers::string_handlers::{split_corpus, split_sentence};
+    use crate::string_handlers::{split_corpus, split_sentence};
 
-    use super::string_handlers::suffixes;
+    use super::suffixes;
 
     #[test]
     fn it_calculates_suffixes() {
